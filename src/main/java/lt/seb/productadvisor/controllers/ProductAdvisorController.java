@@ -13,7 +13,7 @@ public class ProductAdvisorController {
     @Autowired
     ProductAdvisorService productAdvisorService;
 
-    @GetMapping(value = "/suggestProducts", produces = {"application/json"}, consumes = {"application/json"})
+    @PostMapping(value = "/suggestProducts", produces = {"application/json"}, consumes = {"application/json"})
     public ResponseEntity suggestProducts(@RequestBody AnswerRequest answerRequest){
         try{
             return ResponseEntity.ok(productAdvisorService.suggestProducts(answerRequest));

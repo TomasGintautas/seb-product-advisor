@@ -18,6 +18,9 @@ public class IncomeUtil {
     }
 
     public boolean isLowIncome(String incomeRange){
-        return incomeRange.equals(LOW_INCOME);
+        if(!incomeRange.isBlank()){
+            return incomeRange.equals(LOW_INCOME);
+        }
+        return false;
     }
 }

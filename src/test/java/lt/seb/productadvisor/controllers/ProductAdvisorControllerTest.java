@@ -36,26 +36,26 @@ class ProductAdvisorControllerTest {
         AnswerRequest request = new AnswerRequest("highIncome", "adult", false);
 
         MvcResult mvcResult = mvc
-                .perform(MockMvcRequestBuilders.get("/v1/suggestProducts")
+                .perform(MockMvcRequestBuilders.post("/v1/suggestProducts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(convertObjectToJsonString(request)))
                 .andExpect(MockMvcResultMatchers.status().is2xxSuccessful())
                 .andReturn();
 
-        List<Product> result = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<List<Product>>(){});
+        List<String> result = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<List<String>>(){});
 
         assertEquals(4, result.size());
-        assertTrue(result.contains(Product.CREDIT_CARD));
-        assertTrue(result.contains(Product.GOLD_CREDIT_CARD));
-        assertTrue(result.contains(Product.CURRENT_ACCOUNT));
-        assertTrue(result.contains(Product.CURRENT_ACCOUNT_PLUS));
+        assertTrue(result.contains(Product.CREDIT_CARD.toString()));
+        assertTrue(result.contains(Product.GOLD_CREDIT_CARD.toString()));
+        assertTrue(result.contains(Product.CURRENT_ACCOUNT.toString()));
+        assertTrue(result.contains(Product.CURRENT_ACCOUNT_PLUS.toString()));
     }
 
     @Test
     void getSuggestedProducts_return4xxBadRequest_whenBadDataGiven() throws Exception {
         AnswerRequest request = new AnswerRequest(null, null, null);
 
-        mvc.perform(MockMvcRequestBuilders.get("/v1/suggestProducts")
+        mvc.perform(MockMvcRequestBuilders.post("/v1/suggestProducts")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(convertObjectToJsonString(request)))
                 .andExpect(MockMvcResultMatchers.status().is4xxClientError())
@@ -64,7 +64,7 @@ class ProductAdvisorControllerTest {
 
     @Test
     void getSuggestedProducts_return4xxBadRequest_whenNoRequestBody() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/v1/suggestProducts"))
+        mvc.perform(MockMvcRequestBuilders.post("/v1/suggestProducts"))
                 .andExpect(MockMvcResultMatchers.status().is4xxClientError())
                 .andReturn();
     }
